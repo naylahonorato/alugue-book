@@ -110,7 +110,7 @@ p {
 button {
   background-color: #4CAF50;
   color: white;
-  padding: 10px 20px;
+  padding: 5px;
   border: none;
   border-radius: 5px;
   font-size: 1em;
@@ -123,6 +123,8 @@ button:hover {
 }
 
 button:disabled {
+  margin-bottom: 5px;
+  padding: auto;
   background-color: #ddd;
   cursor: not-allowed;
 }
@@ -191,7 +193,35 @@ a:hover {
   }
 }
 
+.admin-actions {
+  background-color: #fff;
+  padding: 20px;
+  margin: 20px;
+  text-align: center;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
+.admin-actions form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  
-  
+.admin-actions input {
+  padding: 10px;
+  margin: 10px 0;
+  width: 80%;
+  max-width: 400px;
+}
+
+.admin-actions button {
+  width: auto;
+}
+
+@media (max-width: 600px) {
+  .livros-todos {
+      flex-direction: column;
+      align-items: center;
+  }
+}
