@@ -1,56 +1,30 @@
-// Função para carregar apenas os livros disponíveis
-document.addEventListener('DOMContentLoaded', function() {
-    carregarLivros(true); // true = carregar apenas os disponíveis
-  });
+const BASE_URL = 'https://booksrental-2jtkn4w3.b4a.run'
+const BOOK_RESOURCE = 'book'
+const BOOK_API = `${BASE_URL}/${BOOK_RESOURCE}`
 
-function usuarioEstaLogado() {
-  const usuarioLogado = localStorage.getItem('usuarioLogado');
-  return usuarioLogado ? true : false;
-}
+async function carregarLivrosDisponiveis() {
+  try {
+    const response = await fetch(`${BOOK_API}/disponiveis`);
+    const livrosDisponiveis = await response.json();
 
-function mostrarUsuarioLogado() {
-  const usuario = localStorage.getItem('usuarioLogado');
-  const usuarioDiv = document.getElementById('usuarioLogado');
-  
-  if (usuario) {
-    usuarioDiv.textContent = `Usuário logado: ${usuario}`;
-    document.getElementById('logoutBtn').style.display = 'block';
+    const catalogoDiv = document.querySelector('.livros-disponiveis');
+    catalogoDiv.innerHTML = '';
+
+    livrosDisponiveis.forEach(livro => {
+      const livroDiv = document.createElement('div');
+      livroDiv.innerHTML = `
+        <img src="${livro.imagem}" alt="${livro.titulo}" style="width:150px;height:200px;">
+        <h3>${livro.titulo}</h3>
+        <p>Autor: ${livro.autor}</p>
+        <button onclick="alugarLivro(${livro.id})">Alugar</button>
+      `;
+      catalogoDiv.appendChild(livroDiv);
+    });
+  } catch (error) {
+    console.error('Erro ao carregar os livros disponíveis:', error);
   }
 }
-
-function logout() {
-  localStorage.removeItem('usuarioLogado');
-  window.location.href = 'login.html';
-}
-
-document.getElementById('logoutBtn').addEventListener('click', logout);
-
-document.addEventListener('DOMContentLoaded', function() {
-  if (!usuarioEstaLogado()) {
-  
-  } else {
-    mostrarUsuarioLogado();
-  }
-});
-
-function carregarLivrosDisponiveis() {
-  const livrosCatalogo = JSON.parse(localStorage.getItem('statusAluguel')) || livros; // Obtém o status dos livros do armazenamento ou usa o padrão
-  const livrosDisponiveis = livrosCatalogo.filter(livro => !livro.alugado); // Filtra os livros que não estão alugados
-  const catalogoDiv = document.querySelector('.livros-disponiveis'); // Div onde os livros serão exibidos
-  catalogoDiv.innerHTML = '';
-
-  livrosDisponiveis.forEach(livro => {
-    const livroDiv = document.createElement('div');
-    livroDiv.innerHTML = `
-       <img src="${livro.imagem}" alt="${livro.titulo}" style="width:150px;height:200px;">
-      <h3>${livro.titulo}</h3>
-      <p>Autor: ${livro.autor}</p>
-      <button onclick="alugarLivro(${livro.id})">Alugar</button>
-    `;
-    catalogoDiv.appendChild(livroDiv);
-  });
-}
-
 
 document.addEventListener('DOMContentLoaded', carregarLivrosDisponiveis);
+
 
